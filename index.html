@@ -2,7 +2,6 @@
 <html>
 <head>
   <title></title>
-<<<<<<< HEAD
 </head>
 <body>
   <!-- <script type="text/javascript" src="js/vector2.js"></script> -->
@@ -10,40 +9,8 @@
   <script type="text/javascript" src="assets/js/canvas.js"></script>
   <script type="text/javascript" src="assets/js/particle.js"></script>
   <script type="text/javascript" src="assets/js/rect.js"></script>
-=======
-  <style>
-    body {
-  		background-color: #000000;
-  		margin: 0px;
-  		text-align:center;
-  		font-family: "Lucida Console, Monaco5, monospace";
-	  }
-  	a {
-      color: #fff;
-      text-decoration: none;
-  	}
-  	a:hover {
-      text-decoration: underline;
-  	}
-  	canvas {
-  		background-color:#000;
-  	}
-    #end_text {
-      position: absolute;
-      left: 0;
-      top: 0;
-      width: 100%;
-      height: 100%;
-      color: #5DFC0A;
-    }
-  </style>
 </head>
 <body>
-  <!-- <script type="text/javascript" src="js/vector2.js"></script> -->
-  <script type="text/javascript" src="js/canvas.js"></script>
-  <script type="text/javascript" src="js/particle.js"></script>
-  <script type="text/javascript" src="js/rect.js"></script>
->>>>>>> renamed main html file to index.html
   <script type="text/javascript">
 
     // global variables
@@ -91,11 +58,7 @@
     init();
 
     function init() {
-<<<<<<< HEAD
-      // rect.class = 'bar';
       rect.init();
-=======
->>>>>>> renamed main html file to index.html
       setInterval(function() {
         loop();
       }, 1000/60);
@@ -133,11 +96,7 @@
 
 			// detect if the particle hits the paddle
 			// ...and reverse its direction
-<<<<<<< HEAD
 	    else if (particle.posY >= rect.posY && particle.posY <= rect.posY + rect.height) {
-=======
-	    else if (particle.posY >= rect.posY) {
->>>>>>> renamed main html file to index.html
 
 				if ((particle.posX >= (mouseX - rect.width/2)) && (particle.posX <= (mouseX + rect.width/2))) {
 					particle.reverseY();
