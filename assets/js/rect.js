@@ -27,11 +27,18 @@ function Rect() {
     this.posX += this.velX;
   }
 
+  this.erase = function(ctx) {
+    ctx.globalCompositeOperation = 'copy';
+    ctx.fillStyle = "rgba(0, 0, 0, 0)";
+    ctx.fillRect(this.posX, this.posY, this.width, this.height);
+    ctx.fill();
+  };
+
   this.render = function(ctx) {
     ctx.fillStyle = "#5DFC0A";
     ctx.fillRect(this.posX, this.posY, this.width, this.height);
     ctx.fill();
-  }
+  };
 
   this.renderHtml = function() {
     rect.style.width = this.width + "px";
@@ -40,6 +47,7 @@ function Rect() {
     rect.style.left = this.posX + "px";
     rect.style.top = this.posY + "px";
     rect.style.backgroundColor = "#fff";
-  }
-}
+  };
+
+};
 

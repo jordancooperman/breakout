@@ -29,7 +29,8 @@
 				canvas = new Canvas(screenWidth, screenHeight),
         paddle = new Rect(),
         particle = new Particle(4),
-				bricks = [];
+				bricks = [],
+				lastInCol = [];
 
     // configure objects
     paddle.width = 50;
@@ -47,6 +48,8 @@
 		canvas.make();
 		brickCanvas.make();
 
+		var colHeight = 8;
+
     brickCanvas.canvasElement.addEventListener('mousemove', onMouseMove, false);
     brickCanvas.canvasElement.addEventListener('mouseup', onMouseUp, false);
 
@@ -62,7 +65,7 @@
 
     function init() {
       paddle.render(canvas.ctx);
-			makeBrickField(30);
+			makeBrickField(100);
 			for (var i = 0; i < bricks.length; i++) {
 				var brick = bricks[i];
 
@@ -79,6 +82,7 @@
 				paddle.target = mouseX - (paddle.width/2);
 
 				canvas.clear();
+
 	      paddle.render(canvas.ctx);
 	      particle.render(canvas.ctx);
 
@@ -94,32 +98,68 @@
     }
 
 		function makeBrickField(brickCount) {
+	    this.row = 0;
+	    this.inRow = 0;
+	    this.col = 0;
+	    this.width = 50;
+	    this.brickDivision = 10;
+	    this.maxInRow = Math.round(screenWidth/(this.width + this.brickDivision));
+	    this.brickCount = this.maxInRow * this.colHeight;
+
+
 			var i = 0,
-					length = brickCount,
-					col = 0,
-					colHeight = 10;
+			    y = 0,
+			    colHeight = colHeight,
+					length =  this.brickCount;
 
 			for (i; i < length; i++) {
-
-				brick = new Rect(),
-
-				brick.width = 50;
+			  brick = new Rect(),
+				brick.width = this.width;
 				brick.height = 10;
-				brick.posX = col * brick.width;
-				brick.posY = 10 * (i % 10) + ((i%10)*10);
+				brick.lastInCol = false;
 
-				console.log(col);
+				brick.posX = this.col * brick.width + (this.col * this.brickDivision);
 
-				if (i > colHeight && i % colHeight == 0) {
-					col++
-					brick.posY = 10;
-				}
+				brick.posY = 10 * y + (y * this.brickDivision);
+        y++;
+        // this.inRow++;
+
+        if (y >= this.colHeight) {
+          y = 0;
+          this.col++
+          brick.lastInCol = true;
+        }
+        // if (this.inRow >= this.maxInRow) {
+        //   this.inRow = 0;
+        //   this.row++;
+        // }
 
 				bricks.push(brick);
+        if (brick.lastInCol == true) {
+          lastInCol.push(brick);
+        }
 			}
-		}
+		};
 
     function collisionDetection() {
+
+			var i = 0,
+			    length = lastInCol.length;
+
+			for (i; i < length; i++) {
+  			if ( (particle.posY <= (lastInCol[i].posY + brick.height)) ) {
+          if ( (particle.posX >= lastInCol[i].posX) && (particle.posX <= lastInCol[i].posX + brick.width) ) {
+            lastInCol[i].erase(brickCanvas.ctx);
+            lastInCol.remove(i);
+            lastInCol.push(bricks[(i*(colHeight+1))-1] );
+            console.log("new brick: " + bricks[(i*colHeight+1)]);
+            console.log("new brick position: " + i*(colHeight + 1));
+
+            length = lastInCol.length;
+    				particle.reverseY();
+          }
+  			}
+			};
 
 			// detect if the particle hits the walls
 			// ...and reverse its dipaddleion
@@ -156,7 +196,7 @@
 	         // end_text.addEventListener('click', restart, false);
 	     }
 	    }
-    }
+    };
 
     // function restart() {
     //     game_over = false;
@@ -168,16 +208,23 @@
     function onMouseMove(event) {
     	mouseX = event.clientX;
     	mouseY = event.clientY;
-    }
+    };
 
     function onMouseUp() {
       click = true;
-    }
+    };
 
 		// assorted functions
     function random(min, max) {
         return (Math.random()*(max-min) + min)
-    }
+    };
+
+    // Array Remove - By John Resig (MIT Licensed)
+    Array.prototype.remove = function(from, to) {
+      var rest = this.slice((to || from) + 1 || this.length);
+      this.length = from < 0 ? this.length + from : from;
+      return this.push.apply(this, rest);
+    };
 
     </script>
 </body>
