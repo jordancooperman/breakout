@@ -127,7 +127,6 @@
         if (y >= this.colHeight) {
           y = 0;
           this.col++
-          brick.lastInCol = true;
         }
         // if (this.inRow >= this.maxInRow) {
         //   this.inRow = 0;
@@ -135,25 +134,19 @@
         // }
 
 				bricks.push(brick);
-        if (brick.lastInCol == true) {
-          lastInCol.push(brick);
-        }
 			}
 		};
 
     function collisionDetection() {
 
 			var i = 0,
-			    length = lastInCol.length;
+			    length = bricks.length;
 
 			for (i; i < length; i++) {
-  			if ( (particle.posY <= (lastInCol[i].posY + brick.height)) ) {
-          if ( (particle.posX >= lastInCol[i].posX) && (particle.posX <= lastInCol[i].posX + brick.width) ) {
-            lastInCol[i].erase(brickCanvas.ctx);
-            lastInCol.remove(i);
-            lastInCol.push(bricks[(i*(colHeight+1))-1] );
-            console.log("new brick: " + bricks[(i*colHeight+1)]);
-            console.log("new brick position: " + i*(colHeight + 1));
+  			if ( (particle.posY <= (bricks[i].posY + brick.height)) ) {
+          if ( (particle.posX >= bricks[i].posX) && (particle.posX <= bricks[i].posX + brick.width) ) {
+            bricks[i].erase(brickCanvas.ctx);
+            bricks.remove(i);
 
             length = lastInCol.length;
     				particle.reverseY();
