@@ -6,6 +6,7 @@ function Canvas(width, height) {
     this.canvasElement = document.createElement( 'canvas' );
     this.canvasElement.width = screenWidth;
     this.canvasElement.height = screenHeight;
+    this.canvasElement.style.position = "absolute";
     this.ctx = this.canvasElement.getContext( '2d' );
     container = document.createElement( 'div' );
     container.className = "container";

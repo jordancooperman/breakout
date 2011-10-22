@@ -25,27 +25,30 @@
         mouseY = 0;
 
     // create the necessary objects
-    var canvas = new Canvas(screenWidth, screenHeight),
-        rect = new Rect(),
-        particle = new Particle(4);
+    var brickCanvas = new Canvas(screenWidth, screenHeight),
+				canvas = new Canvas(screenWidth, screenHeight),
+        paddle = new Rect(),
+        particle = new Particle(4),
+				bricks = [];
 
     // configure objects
-    rect.width = 50;
-    rect.height = 10;
-		rect.posX = halfWidth - rect.width/2;
-		rect.posY = screenHeight - 25;
+    paddle.width = 50;
+    paddle.height = 10;
+		paddle.posX = halfWidth - paddle.width/2;
+		paddle.posY = screenHeight - 25;
 
 		particle.posX = halfWidth;
-		particle.posY = rect.posY - particle.size*2;
+		particle.posY = paddle.posY - particle.size*2;
 		particle.velX = 0;
     particle.velY = -4;
 
     // setup event listeners
 
-    canvas.make();
+		canvas.make();
+		brickCanvas.make();
 
-    canvas.canvasElement.addEventListener('mousemove', onMouseMove, false);
-    canvas.canvasElement.addEventListener('mouseup', onMouseUp, false);
+    brickCanvas.canvasElement.addEventListener('mousemove', onMouseMove, false);
+    brickCanvas.canvasElement.addEventListener('mouseup', onMouseUp, false);
 
     var click = false;
 
@@ -58,7 +61,14 @@
     init();
 
     function init() {
-      rect.init();
+      paddle.render(canvas.ctx);
+			makeBrickField(30);
+			for (var i = 0; i < bricks.length; i++) {
+				var brick = bricks[i];
+
+				brick.render(brickCanvas.ctx);
+			}
+
       setInterval(function() {
         loop();
       }, 1000/60);
@@ -66,14 +76,14 @@
 
     function loop() {
 			if (game_over == false) {
-				rect.target = mouseX - (rect.width/2);
+				paddle.target = mouseX - (paddle.width/2);
 
 				canvas.clear();
-	      rect.render(canvas.ctx);
+	      paddle.render(canvas.ctx);
 	      particle.render(canvas.ctx);
 
 				if (click == true) {
-					rect.update();
+					paddle.update();
 					particle.update();
 					collisionDetection();
 				}
@@ -83,10 +93,36 @@
 			}
     }
 
+		function makeBrickField(brickCount) {
+			var i = 0,
+					length = brickCount,
+					col = 0,
+					colHeight = 10;
+
+			for (i; i < length; i++) {
+
+				brick = new Rect(),
+
+				brick.width = 50;
+				brick.height = 10;
+				brick.posX = col * brick.width;
+				brick.posY = 10 * (i % 10) + ((i%10)*10);
+
+				console.log(col);
+
+				if (i > colHeight && i % colHeight == 0) {
+					col++
+					brick.posY = 10;
+				}
+
+				bricks.push(brick);
+			}
+		}
+
     function collisionDetection() {
 
 			// detect if the particle hits the walls
-			// ...and reverse its direction
+			// ...and reverse its dipaddleion
 	    if (particle.posY <= 0) {
 				particle.reverseY();
 	    }
@@ -95,10 +131,10 @@
 	    }
 
 			// detect if the particle hits the paddle
-			// ...and reverse its direction
-	    else if (particle.posY >= rect.posY && particle.posY <= rect.posY + rect.height) {
+			// ...and reverse its dipaddleion
+	    else if (particle.posY >= paddle.posY && particle.posY <= paddle.posY + paddle.height) {
 
-				if ((particle.posX >= (mouseX - rect.width/2)) && (particle.posX <= (mouseX + rect.width/2))) {
+				if ((particle.posX >= (mouseX - paddle.width/2)) && (particle.posX <= (mouseX + paddle.width/2))) {
 					particle.reverseY();
 					particle.velX *= 1.02;
 	        particle.velY *= 1.02;
