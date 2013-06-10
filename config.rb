@@ -1,0 +1,8 @@
+http_path = "/"
+css_dir = "assets/css"
+sass_dir = "assets/compile/scss"
+images_dir = "assets/compile/img"
+generated_images_path = "assets/img/sprites"
+generated_images_dir = "assets/img/sprites"
+http_generated_images_path = "/assets/img/sprites"
+javascripts_dir = "assets/js"

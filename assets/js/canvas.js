@@ -1,21 +1,33 @@
-function Canvas(width, height) {
+(function() {
+  app.Canvas = (function() {
+    function Canvas(width, height) {
+      this.width = width;
+      this.height = height;
+    }
 
-  this.ctx;
+    Canvas.prototype.make = function() {
+      var container;
 
-  this.make = function() {
-    this.canvasElement = document.createElement( 'canvas' );
-    this.canvasElement.width = screenWidth;
-    this.canvasElement.height = screenHeight;
-    this.canvasElement.style.position = "absolute";
-    this.ctx = this.canvasElement.getContext( '2d' );
-    container = document.createElement( 'div' );
-    container.className = "container";
-    document.body.appendChild(container);
-    container.appendChild(this.canvasElement)
-}
+      this.el = document.createElement('canvas');
+      this.el.width = window.screenWidth;
+      this.el.height = window.screenHeight;
+      this.el.style.position = "absolute";
+      this.el.style.top = '0';
+      this.el.style.left = '0';
+      this.ctx = this.el.getContext('2d');
+      container = document.createElement('div');
+      container.className = "container";
+      document.body.appendChild(container);
+      return container.appendChild(this.el);
+    };
 
-    this.clear = function() {
-    this.ctx.fillStyle = "black";
-    this.ctx.fillRect(0, 0, screenWidth, screenHeight);
-  }
-}
+    Canvas.prototype.clear = function() {
+      this.ctx.fillStyle = "black";
+      return this.ctx.fillRect(0, 0, screenWidth, window.screenHeight);
+    };
+
+    return Canvas;
+
+  })();
+
+}).call(this);

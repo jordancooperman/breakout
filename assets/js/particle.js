@@ -1,46 +1,42 @@
-function Particle(size) {
+(function() {
+  app.Particle = (function() {
+    function Particle(size) {
+      this.posX;
+      this.posY;
+      this.velX = 1;
+      this.velY = 1;
+      this.size = size;
+    }
 
-  // the position of the particle
-  this.posX;
-  this.posY;
+    Particle.prototype.render = function(ctx) {
+      ctx.beginPath();
+      ctx.fillStyle = "#5DFC0A";
+      ctx.arc(this.posX, this.posY, this.size, 0, Math.PI * 2, true);
+      return ctx.fill();
+    };
 
-  // the velocity of the particle
-  this.velX = 1;
-  this.velY = 1;
+    Particle.prototype.update = function() {
+      this.posX += this.velX;
+      return this.posY += this.velY;
+    };
 
-  this.size = size;
+    Particle.prototype.reverseX = function() {
+      return this.velX *= -1;
+    };
 
-  this.render = function(ctx) {
+    Particle.prototype.reverseY = function() {
+      return this.velY *= -1;
+    };
 
-    // draw a cicle of the approrpiate size
-    ctx.beginPath();
-    ctx.fillStyle = "#5DFC0A";
-    ctx.arc(this.posX, this.posY, this.size, 0, Math.PI*2, true)
+    Particle.prototype.restart = function() {
+      this.posX = posX;
+      this.posY = posY;
+      this.velX = 1;
+      return this.velY = 1;
+    };
 
-    // and fill it
-    ctx.fill();
-  };
+    return Particle;
 
-  this.update = function() {
-    // add velocity to the ball
-    this.posX += this.velX;
-    this.posY += this.velY;
-  };
+  })();
 
-  this.reverseX = function() {
-    this.velX *= -1;
-  }
-
-  this.reverseY = function() {
-    this.velY *= -1;
-  }
-
-  this.restart = function() {
-    this.posX = posX;
-    this.posY = posY;
-
-    this.velX = 1;
-    this.velY = 1;
-  };
-
-}
+}).call(this);
